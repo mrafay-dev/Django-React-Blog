@@ -30,14 +30,14 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = api_models.User.objects.create(
-            full_name = validated_data['full_name']
+            full_name = validated_data['full_name'],
             email = validated_data['email']
         )
 
         email_username, mobile = user.email.split("@")
         user.username = email_username
 
-        user.set_password(validate_password['password'])
+        user.set_password(validated_data['password'])
         user.save()
 
         return user
@@ -72,22 +72,22 @@ class BaseDepthSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(BaseDepthSerializer):
     class Meta:
-        model = Comment
+        model = api_models.Comment
         fields = "__all__"
 
 class PostSerializer(BaseDepthSerializer):
     class Meta:
-        model = Post
+        model = api_models.Post
         fields = "__all__"
 
 class BookmarkSerializer(BaseDepthSerializer):
     class Meta:
-        model = Bookmark
+        model = api_models.Bookmark
         fields = "__all__"
 
 class NotificationSerializer(BaseDepthSerializer):
     class Meta:
-        model = Notification
+        model = api_models.Notification
         fields = "__all__"
 
 class AuthorSerializer(serializers.Serializer):
